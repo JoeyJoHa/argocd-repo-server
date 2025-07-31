@@ -12,8 +12,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/example/argocd-repo-server
-    targetRevision: HEAD
-    chart: config/helm/hello-world
+    path: config/helm/hello-world
     helm:
       valueFiles:
       - values-dev.yaml
