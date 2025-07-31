@@ -8,13 +8,13 @@ app:
 
 # Image configuration
 image:
-  repository: nginx
-  tag: "alpine"
+  repository: hello-world
+  tag: "latest"
   pullPolicy: IfNotPresent
 
 # Container configuration
 container:
-  port: 80
+  port: 8080
   name: hello-world
 
 # Environment configuration
@@ -44,8 +44,8 @@ resources:
 # Service configuration
 service:
   type: ClusterIP
-  port: 80
-  targetPort: 80
+  port: 8080
+  targetPort: 8080
 
 # Route configuration
 route:
@@ -94,7 +94,7 @@ healthChecks:
   livenessProbe:
     enabled: true
     path: /
-    port: 80
+    port: 8080
     initialDelaySeconds: 30
     periodSeconds: 10
     timeoutSeconds: 5
@@ -102,7 +102,7 @@ healthChecks:
   readinessProbe:
     enabled: true
     path: /
-    port: 80
+    port: 8080
     initialDelaySeconds: 5
     periodSeconds: 5
     timeoutSeconds: 3

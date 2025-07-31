@@ -76,8 +76,8 @@ app:
 
 # Image configuration
 image:
-  repository: nginx
-  tag: "alpine"
+  repository: hello-world
+  tag: "latest"
   pullPolicy: IfNotPresent
 
 # Environment configuration

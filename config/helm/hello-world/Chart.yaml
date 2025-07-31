@@ -7,7 +7,7 @@ appVersion: "1.0.0"
 keywords:
   - hello-world
   - web
-  - nginx
+  - docker
 home: https://github.com/example/hello-world
 sources:
   - https://github.com/example/hello-world

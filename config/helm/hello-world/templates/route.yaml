@@ -16,7 +16,7 @@ spec:
     name: {{ include "hello-world.serviceName" . }}
     weight: 100
   port:
-    targetPort: http
+    targetPort: 8080
   {{- if .Values.route.tls }}
   tls:
     {{- toYaml .Values.route.tls | nindent 4 }}
