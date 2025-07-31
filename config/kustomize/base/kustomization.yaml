@@ -10,6 +10,7 @@ resources:
   - configmap.yaml
   - route.yaml
   - serviceaccount.yaml
+  - nginx-config.yaml
 
 labels:
   - pairs:
@@ -22,7 +23,7 @@ commonAnnotations:
   app.kubernetes.io/version: v1.0.0
   app.kubernetes.io/managed-by: kustomize
   prometheus.io/scrape: "true"
-  prometheus.io/port: "8080"
+  prometheus.io/port: "80"
   prometheus.io/path: "/metrics"
 
 namespace: default 

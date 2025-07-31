@@ -17,9 +17,9 @@ spec:
       serviceAccountName: hello-world-sa
       containers:
       - name: hello-world
-        image: hello-world:latest
+        image: nginx:alpine
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           name: http
         env:
         - name: ENVIRONMENT
@@ -33,7 +33,7 @@ spec:
               name: hello-world-config
               key: log_level
         - name: PORT
-          value: "8080"
+          value: "80"
         resources:
           requests:
             cpu: 100m
@@ -44,7 +44,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 8080
+            port: 80
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
@@ -52,7 +52,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /
-            port: 8080
+            port: 80
           initialDelaySeconds: 5
           periodSeconds: 5
           timeoutSeconds: 3
@@ -62,8 +62,14 @@ spec:
           mountPath: /tmp
         - name: varlog
           mountPath: /var/log
+        - name: nginx-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
       volumes:
       - name: tmp
         emptyDir: {}
       - name: varlog
-        emptyDir: {} 
+        emptyDir: {}
+      - name: nginx-config
+        configMap:
+          name: nginx-config 
