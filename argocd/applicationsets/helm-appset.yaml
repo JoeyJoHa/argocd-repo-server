@@ -10,17 +10,14 @@ spec:
       - environment: dev
         namespace: dev
         releaseName: hello-world-dev
-        host: hello-world-dev.local
         valuesFile: values-dev.yaml
       - environment: staging
         namespace: staging
         releaseName: hello-world-staging
-        host: hello-world-staging.local
         valuesFile: values-staging.yaml
       - environment: prod
         namespace: prod
         releaseName: hello-world-prod
-        host: hello-world-prod.local
         valuesFile: values-prod.yaml
   template:
     metadata:

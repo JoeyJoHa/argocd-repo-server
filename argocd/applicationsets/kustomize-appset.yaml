@@ -10,15 +10,12 @@ spec:
       - environment: dev
         namespace: dev
         namePrefix: dev-
-        host: hello-world-dev.local
       - environment: staging
         namespace: staging
         namePrefix: staging-
-        host: hello-world-staging.local
       - environment: prod
         namespace: prod
         namePrefix: prod-
-        host: hello-world-prod.local
   template:
     metadata:
       name: '{{namePrefix}}hello-world'
@@ -30,7 +27,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/JoeyJoHa/argocd-repo-server
-        targetRevision: HEAD
+        targetRevision: main
         path: config/kustomize/overlays/{{environment}}
       destination:
         server: https://kubernetes.default.svc

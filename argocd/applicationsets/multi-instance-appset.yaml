@@ -12,61 +12,56 @@ spec:
         environment: dev
         namespace: dev-instance-1
         namePrefix: dev-instance-1-
-        host: hello-world-dev-instance-1.local
         replicas: 1
         logLevel: debug
-        debugEnabled: true
+        debugEnabled: "true"
         resources:
-          cpu: 100m
-          memory: 128Mi
+          cpu: "100m"
+          memory: "128Mi"
       # Instance 2: Development instance with different config
       - instance: dev-instance-2
         environment: dev
         namespace: dev-instance-2
         namePrefix: dev-instance-2-
-        host: hello-world-dev-instance-2.local
-        replicas: 2
+        replicas: 1
         logLevel: info
-        debugEnabled: false
+        debugEnabled: "false"
         resources:
-          cpu: 200m
-          memory: 256Mi
+          cpu: "200m"
+          memory: "256Mi"
       # Instance 3: Staging instance
       - instance: staging-instance-1
         environment: staging
         namespace: staging-instance-1
         namePrefix: staging-instance-1-
-        host: hello-world-staging-instance-1.local
-        replicas: 2
+        replicas: 1
         logLevel: info
-        debugEnabled: false
+        debugEnabled: "false"
         resources:
-          cpu: 300m
-          memory: 384Mi
+          cpu: "300m"
+          memory: "384Mi"
       # Instance 4: Production instance
       - instance: prod-instance-1
         environment: prod
         namespace: prod-instance-1
         namePrefix: prod-instance-1-
-        host: hello-world-prod-instance-1.local
-        replicas: 3
+        replicas: 1
         logLevel: warn
-        debugEnabled: false
+        debugEnabled: "false"
         resources:
-          cpu: 500m
-          memory: 512Mi
+          cpu: "500m"
+          memory: "512Mi"
       # Instance 5: Production instance with different scaling
       - instance: prod-instance-2
         environment: prod
         namespace: prod-instance-2
         namePrefix: prod-instance-2-
-        host: hello-world-prod-instance-2.local
-        replicas: 5
+        replicas: 1
         logLevel: warn
-        debugEnabled: false
+        debugEnabled: "false"
         resources:
-          cpu: 1000m
-          memory: 1Gi
+          cpu: "1000m"
+          memory: "1Gi"
   template:
     metadata:
       name: '{{namePrefix}}hello-world'
@@ -79,7 +74,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/JoeyJoHa/argocd-repo-server
-        targetRevision: HEAD
+        targetRevision: main
         path: config/kustomize/overlays/{{environment}}
         kustomize:
           patches:
@@ -92,14 +87,14 @@ spec:
                 value: {{replicas}}
           - target:
               kind: ConfigMap
-              name: hello-world-config
+              name: hello-world-{{environment}}-config
             patch: |-
               - op: replace
                 path: /data/log_level
-                value: {{logLevel}}
+                value: "{{logLevel}}"
               - op: replace
                 path: /data/debug_enabled
-                value: {{debugEnabled}}
+                value: "{{debugEnabled}}"
           - target:
               kind: Deployment
               name: hello-world
