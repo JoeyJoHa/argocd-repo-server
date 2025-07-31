@@ -10,14 +10,17 @@ resources:
   - ../../base
   - configmap.yaml
 
-patchesStrategicMerge:
-  - patches/replica-count.yaml
+patches:
+  - path: patches/replica-count.yaml
+    target:
+      kind: Deployment
 
 namePrefix: staging-
 
-commonLabels:
-  environment: staging
-  tier: staging
+labels:
+  - pairs:
+      environment: staging
+      tier: staging
 
 commonAnnotations:
   environment: staging

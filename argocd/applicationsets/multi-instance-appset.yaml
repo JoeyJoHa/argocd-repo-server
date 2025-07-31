@@ -78,7 +78,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/example/argocd-repo-server
+        repoURL: https://github.com/JoeyJoHa/argocd-repo-server
         targetRevision: HEAD
         path: config/kustomize/overlays/{{environment}}
         kustomize:

@@ -32,8 +32,8 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/example/argocd-repo-server
-        targetRevision: HEAD
+        repoURL: https://github.com/JoeyJoHa/argocd-repo-server
+        targetRevision: main
         chart: config/helm/hello-world
         helm:
           valueFiles:

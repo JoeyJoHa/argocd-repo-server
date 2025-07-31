@@ -11,14 +11,17 @@ resources:
   - configmap.yaml
   - patches/hpa.yaml
 
-patchesStrategicMerge:
-  - patches/replica-count.yaml
+patches:
+  - path: patches/replica-count.yaml
+    target:
+      kind: Deployment
 
 namePrefix: prod-
 
-commonLabels:
-  environment: prod
-  tier: production
+labels:
+  - pairs:
+      environment: prod
+      tier: production
 
 commonAnnotations:
   environment: prod

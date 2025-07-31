@@ -10,14 +10,17 @@ resources:
   - ../../base
   - configmap.yaml
 
-patchesStrategicMerge:
-  - patches/replica-count.yaml
+patches:
+  - path: patches/replica-count.yaml
+    target:
+      kind: Deployment
 
 namePrefix: dev-
 
-commonLabels:
-  environment: dev
-  tier: development
+labels:
+  - pairs:
+      environment: dev
+      tier: development
 
 commonAnnotations:
   environment: dev

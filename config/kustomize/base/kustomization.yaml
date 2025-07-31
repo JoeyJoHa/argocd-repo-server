@@ -10,10 +10,11 @@ resources:
   - configmap.yaml
   - route.yaml
 
-commonLabels:
-  app: hello-world
-  version: v1.0.0
-  managed-by: kustomize
+labels:
+  - pairs:
+      app: hello-world
+      version: v1.0.0
+      managed-by: kustomize
 
 commonAnnotations:
   app.kubernetes.io/name: hello-world

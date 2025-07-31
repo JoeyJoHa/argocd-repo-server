@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: hello-world-kustomize
-  namespace: argocd
+  namespace: openshift-gitops
 spec:
   generators:
   - list:
@@ -22,14 +22,14 @@ spec:
   template:
     metadata:
       name: '{{namePrefix}}hello-world'
-      namespace: argocd
+      namespace: openshift-gitops
       labels:
         environment: '{{environment}}'
         managed-by: applicationset
     spec:
       project: default
       source:
-        repoURL: https://github.com/example/argocd-repo-server
+        repoURL: https://github.com/JoeyJoHa/argocd-repo-server
         targetRevision: HEAD
         path: config/kustomize/overlays/{{environment}}
       destination:
