@@ -33,7 +33,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/JoeyJoHa/argocd-repo-server
-        targetRevision: main
+        targetRevision: 1.0.0
         path: config/helm/hello-world
         helm:
           valueFiles:

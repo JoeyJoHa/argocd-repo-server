@@ -12,6 +12,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/example/argocd-repo-server
+    targetRevision: 1.0.0
     path: config/helm/hello-world
     helm:
       valueFiles:
