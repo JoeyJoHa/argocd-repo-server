@@ -5,14 +5,14 @@ environment:
   debugEnabled: false
 
 deployment:
-  replicas: 2
+  replicas: 1
 
 resources:
   requests:
-    cpu: 200m
-    memory: 256Mi
+    cpu: 100m
+    memory: 128Mi
   limits:
-    cpu: 400m
+    cpu: 500m
     memory: 512Mi
 
 hpa:
@@ -20,7 +20,6 @@ hpa:
 
 route:
   enabled: true
-  host: hello-world-staging.local
 
 labels:
   environment: staging
