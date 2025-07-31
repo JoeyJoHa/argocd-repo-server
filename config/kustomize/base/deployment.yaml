@@ -19,7 +19,7 @@ spec:
       - name: hello-world
         image: busybox:1.35
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           name: http
         command: ["/bin/sh"]
         args:
@@ -28,7 +28,7 @@ spec:
           echo "Hello World from OpenShift!" > /tmp/index.html
           echo "OK" > /tmp/health.html
           while true; do
-            echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n$(cat /tmp/index.html)" | nc -l -p 80
+            echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n$(cat /tmp/index.html)" | nc -l -p 8080
           done
         resources:
           requests:
@@ -40,7 +40,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
@@ -48,7 +48,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 8080
           initialDelaySeconds: 5
           periodSeconds: 5
           timeoutSeconds: 3
