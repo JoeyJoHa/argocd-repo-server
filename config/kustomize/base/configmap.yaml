@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-world-config
+  labels:
+    app: hello-world
+data:
+  environment: "base"
+  log_level: "info"
+  app_name: "hello-world"
+  version: "v1.0.0" 

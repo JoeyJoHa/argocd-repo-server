@@ -1,0 +1,124 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: hello-world-multi-instance
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      # Instance 1: Development instance
+      - instance: dev-instance-1
+        environment: dev
+        namespace: dev-instance-1
+        namePrefix: dev-instance-1-
+        host: hello-world-dev-instance-1.local
+        replicas: 1
+        logLevel: debug
+        debugEnabled: true
+        resources:
+          cpu: 100m
+          memory: 128Mi
+      # Instance 2: Development instance with different config
+      - instance: dev-instance-2
+        environment: dev
+        namespace: dev-instance-2
+        namePrefix: dev-instance-2-
+        host: hello-world-dev-instance-2.local
+        replicas: 2
+        logLevel: info
+        debugEnabled: false
+        resources:
+          cpu: 200m
+          memory: 256Mi
+      # Instance 3: Staging instance
+      - instance: staging-instance-1
+        environment: staging
+        namespace: staging-instance-1
+        namePrefix: staging-instance-1-
+        host: hello-world-staging-instance-1.local
+        replicas: 2
+        logLevel: info
+        debugEnabled: false
+        resources:
+          cpu: 300m
+          memory: 384Mi
+      # Instance 4: Production instance
+      - instance: prod-instance-1
+        environment: prod
+        namespace: prod-instance-1
+        namePrefix: prod-instance-1-
+        host: hello-world-prod-instance-1.local
+        replicas: 3
+        logLevel: warn
+        debugEnabled: false
+        resources:
+          cpu: 500m
+          memory: 512Mi
+      # Instance 5: Production instance with different scaling
+      - instance: prod-instance-2
+        environment: prod
+        namespace: prod-instance-2
+        namePrefix: prod-instance-2-
+        host: hello-world-prod-instance-2.local
+        replicas: 5
+        logLevel: warn
+        debugEnabled: false
+        resources:
+          cpu: 1000m
+          memory: 1Gi
+  template:
+    metadata:
+      name: '{{namePrefix}}hello-world'
+      namespace: argocd
+      labels:
+        environment: '{{environment}}'
+        instance: '{{instance}}'
+        managed-by: applicationset
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/argocd-repo-server
+        targetRevision: HEAD
+        path: config/kustomize/overlays/{{environment}}
+        kustomize:
+          patches:
+          - target:
+              kind: Deployment
+              name: hello-world
+            patch: |-
+              - op: replace
+                path: /spec/replicas
+                value: {{replicas}}
+          - target:
+              kind: ConfigMap
+              name: hello-world-config
+            patch: |-
+              - op: replace
+                path: /data/log_level
+                value: {{logLevel}}
+              - op: replace
+                path: /data/debug_enabled
+                value: {{debugEnabled}}
+          - target:
+              kind: Deployment
+              name: hello-world
+            patch: |-
+              - op: replace
+                path: /spec/template/spec/containers/0/resources/requests/cpu
+                value: {{resources.cpu}}
+              - op: replace
+                path: /spec/template/spec/containers/0/resources/requests/memory
+                value: {{resources.memory}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+      revisionHistoryLimit: 10 

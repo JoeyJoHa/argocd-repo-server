@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: staging-hello-world
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: hello-world
+    app.kubernetes.io/instance: staging
+    environment: staging
+    managed-by: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/example/argocd-repo-server
+    targetRevision: HEAD
+    path: config/kustomize/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: staging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+  revisionHistoryLimit: 10 

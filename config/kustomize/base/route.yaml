@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: hello-world
+  labels:
+    app: hello-world
+spec:
+  host: hello-world.local
+  to:
+    kind: Service
+    name: hello-world
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect 

@@ -1,0 +1,35 @@
+# Production environment values
+environment:
+  name: "prod"
+  logLevel: "warn"
+  debugEnabled: false
+
+deployment:
+  replicas: 3
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+hpa:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+route:
+  enabled: true
+  host: hello-world-prod.local
+
+labels:
+  environment: prod
+  tier: production
+
+annotations:
+  environment: prod
+  managed-by: argocd 

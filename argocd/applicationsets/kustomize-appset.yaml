@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: hello-world-kustomize
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - environment: dev
+        namespace: dev
+        namePrefix: dev-
+        host: hello-world-dev.local
+      - environment: staging
+        namespace: staging
+        namePrefix: staging-
+        host: hello-world-staging.local
+      - environment: prod
+        namespace: prod
+        namePrefix: prod-
+        host: hello-world-prod.local
+  template:
+    metadata:
+      name: '{{namePrefix}}hello-world'
+      namespace: argocd
+      labels:
+        environment: '{{environment}}'
+        managed-by: applicationset
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/argocd-repo-server
+        targetRevision: HEAD
+        path: config/kustomize/overlays/{{environment}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+      revisionHistoryLimit: 10 

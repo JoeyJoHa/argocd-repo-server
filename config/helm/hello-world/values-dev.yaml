@@ -1,0 +1,31 @@
+# Development environment values
+environment:
+  name: "dev"
+  logLevel: "debug"
+  debugEnabled: true
+
+deployment:
+  replicas: 1
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+hpa:
+  enabled: false
+
+route:
+  enabled: true
+  host: hello-world-dev.local
+
+labels:
+  environment: dev
+  tier: development
+
+annotations:
+  environment: dev
+  managed-by: argocd 

@@ -1,0 +1,142 @@
+# Default values for hello-world
+# This is a YAML-formatted file.
+
+# Application configuration
+app:
+  name: hello-world
+  version: "1.0.0"
+
+# Image configuration
+image:
+  repository: nginx
+  tag: "alpine"
+  pullPolicy: IfNotPresent
+
+# Container configuration
+container:
+  port: 80
+  name: hello-world
+
+# Environment configuration
+environment:
+  name: "base"
+  logLevel: "info"
+  debugEnabled: false
+
+# Deployment configuration
+deployment:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+
+# Resource configuration
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+# Route configuration
+route:
+  enabled: true
+  host: hello-world.local
+  annotations: {}
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+
+# Horizontal Pod Autoscaler configuration
+hpa:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 10
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+
+# Security configuration
+security:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+# Health checks configuration
+healthChecks:
+  livenessProbe:
+    enabled: true
+    path: /
+    port: 80
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readinessProbe:
+    enabled: true
+    path: /
+    port: 80
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# Monitoring configuration
+monitoring:
+  enabled: true
+  prometheus:
+    scrape: true
+    port: 8080
+    path: /metrics
+
+# Labels and annotations
+labels:
+  app: hello-world
+  version: v1.0.0
+  managed-by: helm
+
+annotations:
+  app.kubernetes.io/name: hello-world
+  app.kubernetes.io/version: v1.0.0
+  app.kubernetes.io/managed-by: helm
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8080"
+  prometheus.io/path: "/metrics"
+
+# Service account configuration
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+# Namespace configuration
+namespace:
+  create: false
+  name: default 

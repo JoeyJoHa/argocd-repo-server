@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: hello-world-helm
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - environment: dev
+        namespace: dev
+        releaseName: hello-world-dev
+        host: hello-world-dev.local
+        valuesFile: values-dev.yaml
+      - environment: staging
+        namespace: staging
+        releaseName: hello-world-staging
+        host: hello-world-staging.local
+        valuesFile: values-staging.yaml
+      - environment: prod
+        namespace: prod
+        releaseName: hello-world-prod
+        host: hello-world-prod.local
+        valuesFile: values-prod.yaml
+  template:
+    metadata:
+      name: '{{releaseName}}'
+      namespace: argocd
+      labels:
+        environment: '{{environment}}'
+        managed-by: applicationset
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/argocd-repo-server
+        targetRevision: HEAD
+        chart: config/helm/hello-world
+        helm:
+          valueFiles:
+          - '{{valuesFile}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+      revisionHistoryLimit: 10 

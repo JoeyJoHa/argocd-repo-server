@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-world-config
+  labels:
+    app: hello-world
+    environment: dev
+data:
+  environment: "dev"
+  log_level: "debug"
+  app_name: "hello-world"
+  version: "v1.0.0"
+  debug_enabled: "true" 
