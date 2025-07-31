@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: hello-world-multi-instance
-  namespace: argocd
+  namespace: openshift-gitops
 spec:
   generators:
   - list:
@@ -70,7 +70,7 @@ spec:
   template:
     metadata:
       name: '{{namePrefix}}hello-world'
-      namespace: argocd
+      namespace: openshift-gitops
       labels:
         environment: '{{environment}}'
         instance: '{{instance}}'

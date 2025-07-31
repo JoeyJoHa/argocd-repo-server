@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: hello-world-kustomize-apps
-  namespace: argocd
+  namespace: openshift-gitops
   labels:
     app.kubernetes.io/name: hello-world-kustomize-apps
     app.kubernetes.io/instance: kustomize
@@ -15,7 +15,7 @@ spec:
     path: argocd/applications/kustomize-apps
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: openshift-gitops
   syncPolicy:
     automated:
       prune: true

@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: hello-world-helm
-  namespace: argocd
+  namespace: openshift-gitops
 spec:
   generators:
   - list:
@@ -25,7 +25,7 @@ spec:
   template:
     metadata:
       name: '{{releaseName}}'
-      namespace: argocd
+      namespace: openshift-gitops
       labels:
         environment: '{{environment}}'
         managed-by: applicationset
@@ -33,7 +33,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/JoeyJoHa/argocd-repo-server
-        targetRevision: 1.0.0
+        targetRevision: main
         path: config/helm/hello-world
         helm:
           valueFiles:

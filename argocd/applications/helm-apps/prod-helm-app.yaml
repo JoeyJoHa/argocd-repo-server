@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: prod-hello-world-helm
-  namespace: argocd
+  namespace: openshift-gitops
   labels:
     app.kubernetes.io/name: hello-world
     app.kubernetes.io/instance: prod-helm
@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/example/argocd-repo-server
-    targetRevision: 1.0.0
+    targetRevision: main
     path: config/helm/hello-world
     helm:
       valueFiles:

@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: hello-world-root-app
-  namespace: argocd
+  namespace: openshift-gitops
   labels:
     app.kubernetes.io/name: hello-world-root
     app.kubernetes.io/instance: root
@@ -15,7 +15,7 @@ spec:
     path: argocd/apps-of-apps
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: openshift-gitops
   syncPolicy:
     automated:
       prune: true

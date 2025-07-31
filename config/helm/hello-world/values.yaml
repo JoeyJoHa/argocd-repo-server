@@ -78,18 +78,7 @@ hpa:
           periodSeconds: 15
 
 # Security configuration
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 1000720000
-  runAsGroup: 1000720000
-  fsGroup: 1000720000
-
-containerSecurityContext:
-  allowPrivilegeEscalation: false
-  readOnlyRootFilesystem: true
-  capabilities:
-    drop:
-      - ALL
+# Note: Security context is managed by OpenShift SCCs at the namespace level
 
 # Health checks configuration
 healthChecks:
