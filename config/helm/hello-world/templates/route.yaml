@@ -10,7 +10,6 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  host: {{ .Values.route.host | quote }}
   to:
     kind: Service
     name: {{ include "hello-world.serviceName" . }}

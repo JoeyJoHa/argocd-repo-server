@@ -50,7 +50,6 @@ service:
 # Route configuration
 route:
   enabled: true
-  host: hello-world.local
   annotations: {}
   tls:
     termination: edge

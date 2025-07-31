@@ -5,7 +5,6 @@ metadata:
   labels:
     app: hello-world
 spec:
-  host: hello-world.local
   to:
     kind: Service
     name: hello-world
