@@ -25,8 +25,9 @@ spec:
         args:
         - -c
         - |
-          echo "Hello World from OpenShift!" > /tmp/index.html
+          echo "Hello World from Kustomize on OpenShift!" > /tmp/index.html
           echo "OK" > /tmp/health.html
+          echo "Timestamp: $(date)" > /tmp/status.html
           while true; do
             echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n$(cat /tmp/index.html)" | nc -l -p 8080
           done

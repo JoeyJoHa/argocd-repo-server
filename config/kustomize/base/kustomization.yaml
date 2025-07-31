@@ -10,6 +10,7 @@ resources:
   - configmap.yaml
   - route.yaml
   - serviceaccount.yaml
+  - hpa.yaml
 
 labels:
   - pairs:

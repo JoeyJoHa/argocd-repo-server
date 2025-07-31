@@ -8,4 +8,6 @@ data:
   environment: "base"
   log_level: "info"
   app_name: "hello-world"
-  version: "v1.0.0" 
+  version: "v1.1.0"
+  deployment_method: "kustomize"
+  last_updated: "2025-07-31" 
