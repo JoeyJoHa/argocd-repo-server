@@ -28,7 +28,7 @@ spec:
       serviceAccountName: {{ include "hello-world.serviceAccountName" . }}
       {{- end }}
       securityContext:
-        {{- toYaml .Values.security | nindent 8 }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
       - name: {{ .Values.container.name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -73,7 +73,7 @@ spec:
           failureThreshold: {{ .Values.healthChecks.readinessProbe.failureThreshold }}
         {{- end }}
         securityContext:
-          {{- toYaml .Values.security | nindent 10 }}
+          {{- toYaml .Values.containerSecurityContext | nindent 10 }}
         volumeMounts:
         - name: tmp
           mountPath: /tmp
