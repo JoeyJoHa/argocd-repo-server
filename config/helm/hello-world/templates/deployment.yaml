@@ -35,19 +35,15 @@ spec:
         - name: http
           containerPort: {{ .Values.container.port }}
           protocol: TCP
-        env:
-        - name: ENVIRONMENT
-          value: {{ .Values.environment.name | quote }}
-        - name: LOG_LEVEL
-          value: {{ .Values.environment.logLevel | quote }}
-        - name: APP_NAME
-          value: {{ .Values.app.name | quote }}
-        - name: APP_VERSION
-          value: {{ .Values.app.version | quote }}
-        - name: DEBUG_ENABLED
-          value: {{ .Values.environment.debugEnabled | quote }}
-        - name: PORT
-          value: {{ .Values.container.port | quote }}
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - |
+          echo "Hello World from OpenShift!" > /tmp/index.html
+          echo "OK" > /tmp/health.html
+          while true; do
+            echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n$(cat /tmp/index.html)" | nc -l -p {{ .Values.container.port }}
+          done
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         {{- if .Values.healthChecks.livenessProbe.enabled }}

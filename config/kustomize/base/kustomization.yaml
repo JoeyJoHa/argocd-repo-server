@@ -10,7 +10,6 @@ resources:
   - configmap.yaml
   - route.yaml
   - serviceaccount.yaml
-  - nginx-config.yaml
 
 labels:
   - pairs:

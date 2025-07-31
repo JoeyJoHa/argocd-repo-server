@@ -17,23 +17,19 @@ spec:
       serviceAccountName: hello-world-sa
       containers:
       - name: hello-world
-        image: nginx:alpine
+        image: busybox:1.35
         ports:
         - containerPort: 80
           name: http
-        env:
-        - name: ENVIRONMENT
-          valueFrom:
-            configMapKeyRef:
-              name: hello-world-config
-              key: environment
-        - name: LOG_LEVEL
-          valueFrom:
-            configMapKeyRef:
-              name: hello-world-config
-              key: log_level
-        - name: PORT
-          value: "80"
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - |
+          echo "Hello World from OpenShift!" > /tmp/index.html
+          echo "OK" > /tmp/health.html
+          while true; do
+            echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n$(cat /tmp/index.html)" | nc -l -p 80
+          done
         resources:
           requests:
             cpu: 100m
@@ -62,14 +58,8 @@ spec:
           mountPath: /tmp
         - name: varlog
           mountPath: /var/log
-        - name: nginx-config
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx.conf
       volumes:
       - name: tmp
         emptyDir: {}
       - name: varlog
-        emptyDir: {}
-      - name: nginx-config
-        configMap:
-          name: nginx-config 
+        emptyDir: {} 

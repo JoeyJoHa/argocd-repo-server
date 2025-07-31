@@ -8,8 +8,8 @@ app:
 
 # Image configuration
 image:
-  repository: nginx
-  tag: "alpine"
+  repository: busybox
+  tag: "1.35"
   pullPolicy: IfNotPresent
 
 # Container configuration
