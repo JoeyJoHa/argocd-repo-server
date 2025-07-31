@@ -8,67 +8,31 @@ spec:
   - list:
       elements:
       # Instance 1: Development instance
-      - instance: dev-instance-1
-        environment: dev
+      - environment: dev
         namespace: dev-instance-1
         namePrefix: dev-instance-1-
-        replicas: 1
-        logLevel: debug
-        debugEnabled: "true"
-        resources:
-          cpu: "100m"
-          memory: "128Mi"
       # Instance 2: Development instance with different config
-      - instance: dev-instance-2
-        environment: dev
+      - environment: dev
         namespace: dev-instance-2
         namePrefix: dev-instance-2-
-        replicas: 1
-        logLevel: info
-        debugEnabled: "false"
-        resources:
-          cpu: "200m"
-          memory: "256Mi"
       # Instance 3: Staging instance
-      - instance: staging-instance-1
-        environment: staging
+      - environment: staging
         namespace: staging-instance-1
         namePrefix: staging-instance-1-
-        replicas: 1
-        logLevel: info
-        debugEnabled: "false"
-        resources:
-          cpu: "300m"
-          memory: "384Mi"
       # Instance 4: Production instance
-      - instance: prod-instance-1
-        environment: prod
+      - environment: prod
         namespace: prod-instance-1
         namePrefix: prod-instance-1-
-        replicas: 1
-        logLevel: warn
-        debugEnabled: "false"
-        resources:
-          cpu: "500m"
-          memory: "512Mi"
       # Instance 5: Production instance with different scaling
-      - instance: prod-instance-2
-        environment: prod
+      - environment: prod
         namespace: prod-instance-2
         namePrefix: prod-instance-2-
-        replicas: 1
-        logLevel: warn
-        debugEnabled: "false"
-        resources:
-          cpu: "1000m"
-          memory: "1Gi"
   template:
     metadata:
       name: '{{namePrefix}}hello-world'
       namespace: openshift-gitops
       labels:
         environment: '{{environment}}'
-        instance: '{{instance}}'
         managed-by: applicationset
     spec:
       project: default
@@ -76,35 +40,6 @@ spec:
         repoURL: https://github.com/JoeyJoHa/argocd-repo-server
         targetRevision: main
         path: config/kustomize/overlays/{{environment}}
-        kustomize:
-          patches:
-          - target:
-              kind: Deployment
-              name: hello-world
-            patch: |-
-              - op: replace
-                path: /spec/replicas
-                value: {{replicas}}
-          - target:
-              kind: ConfigMap
-              name: hello-world-{{environment}}-config
-            patch: |-
-              - op: replace
-                path: /data/log_level
-                value: "{{logLevel}}"
-              - op: replace
-                path: /data/debug_enabled
-                value: "{{debugEnabled}}"
-          - target:
-              kind: Deployment
-              name: hello-world
-            patch: |-
-              - op: replace
-                path: /spec/template/spec/containers/0/resources/requests/cpu
-                value: {{resources.cpu}}
-              - op: replace
-                path: /spec/template/spec/containers/0/resources/requests/memory
-                value: {{resources.memory}}
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{namespace}}'
